@@ -3,70 +3,57 @@ import random
 def titulo():
     nome_jogo = "*" * 15 + " JOGO DE ADVINHAÇÃO " + 15 * "*"
     print("*" * len(nome_jogo) , nome_jogo, "*" * len(nome_jogo) , sep="\n" )
-    
 #apresentação do jogo:
 def instrucao():
     print("\nVocê deve advinhar um numero de a à 1 a 10!")
-   
-#mensagem ganhador:
-def ganhou():
-    return print("Você ganhou o jogo!")
-
-#mensagem Fim de jogo:
-def fim_de_jogo():
-    return print("Game over ;(")
-
-#mensagem_de_erro:
-
+#mensagem ganhador  ou de perdedor:
+def ganhou(ganhador):
+    if ganhador:
+        return print("Você ganhou o jogo!")
+    if not ganhador:
+        return print("Game over ;(")
+#mensagem_de_erro
 def voce_errou(chances):
     if chances == 0:
         print("Número errado!\nVocê esgotou suas chances!")
-        return None
-    print("Número errado, tente novamente!\n")
-    if chances > 1:
-        print(f"Você tem mais {chances} chances!")
     else:
-        print(f"Você tem mais {chances} chance!")
-        
+        plural = "s" if chances > 1 else ""
+        print(f"Número errado, tente novamente!\nVocê tem mais {chances} chance{plural}!")
 #selecionando dificuldade.
 def dificuldade_do_jogo():
    print("Por favor, digite o nível da dificuldade: \n")
-   chances = {"Fácil": 6,"Médio": 4 , "Difícil": 3}
-   mapa_chances = {1:"Fácil", 2: "Médio", 3: "Difícil"}
-   dificuldade = int(input("(1) Fácil - (2) Médio - (3) Difícil: "))
-   
-   while dificuldade not in mapa_chances:
-        print("\nPor favor digite uma opção válida!")
-        dificuldade = int(input("(1) Fácil - (2) Médio - (3) Difícil: "))
-       
-   chances = chances[mapa_chances[dificuldade]]
-   
-   return chances
-
+   niveis = {1:("Fácil", 7), 2:("Médio", 5), 3:("Difícil", 3)}
+   while True:
+       try:
+           dificuldade = int(input("1 Fácil - 2 Médio - 3 Difícil: "))
+           if dificuldade in niveis:
+                break  
+           else:
+               print("\nPor favor, digite uma opção válida!")
+       except ValueError:
+                print("\nPor favor, digite um número válido!") 
+   return niveis[dificuldade]                   
 #inicia o jogo:
 def start():
-    chances = dificuldade_do_jogo()
-    print(f'Você terá {chances} chances para acertar o número secreto!\nBoa sorte! \o/\n')
-    #função random.randonint = escolhe um numero aletorio entre um intervalo pré determinado
+    modo, chances = dificuldade_do_jogo()
+    print(f'Você escolheu o nível {modo} e terá {chances} chances para acertar o número secreto!\nBoa sorte! \o/\n')
     numero_secreto = random.randint(1,10)
-    chute = int(input("Digite um número: "))
     ganhador = False
     while chances > 0:
+        try:
+            chute = int(input("Digite um número: "))
+        except ValueError:
+            print("Por favor, digite um número válido!")    
+            continue
         if chute == numero_secreto:
-            ganhou()
             ganhador = True
             break 
-
         else:
              chances -= 1
              voce_errou(chances)
-             if chances != 0:
-                chute = int(input("Digite um número: "))   
-    if not ganhador:
-      fim_de_jogo()
+    ganhou(ganhador)
 
 #------------------------------------------------------------------------------------------------------------
-
 titulo()
 instrucao()
 start()

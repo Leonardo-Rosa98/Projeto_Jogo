@@ -3,15 +3,18 @@ import random
 def titulo():
     nome_jogo = "*" * 15 + " JOGO DE ADVINHAÇÃO " + 15 * "*"
     print("*" * len(nome_jogo) , nome_jogo, "*" * len(nome_jogo) , sep="\n" )
+
 #apresentação do jogo:
 def instrucao():
     print("\nVocê deve advinhar um numero de a à 1 a 10!")
+
 #mensagem ganhador  ou de perdedor:
 def ganhou(ganhador):
     if ganhador:
         return print("Você ganhou o jogo!")
     if not ganhador:
         return print("Game over ;(")
+
 #mensagem_de_erro
 def voce_errou(chances):
     if chances == 0:
@@ -19,6 +22,7 @@ def voce_errou(chances):
     else:
         plural = "s" if chances > 1 else ""
         print(f"Número errado, tente novamente!\nVocê tem mais {chances} chance{plural}!")
+
 #selecionando dificuldade.
 def dificuldade_do_jogo():
    print("Por favor, digite o nível da dificuldade: \n")
@@ -33,6 +37,7 @@ def dificuldade_do_jogo():
        except ValueError:
                 print("\nPor favor, digite um número válido!") 
    return niveis[dificuldade]                   
+
 #inicia o jogo:
 def start():
     modo, chances = dificuldade_do_jogo()
@@ -42,6 +47,9 @@ def start():
     while chances > 0:
         try:
             chute = int(input("Digite um número: "))
+            if chute < 1 or chute > 10:
+                print("Por favor, digite um número de 1 á 10.")    
+                continue
         except ValueError:
             print("Por favor, digite um número válido!")    
             continue
@@ -54,6 +62,7 @@ def start():
     ganhou(ganhador)
 
 #------------------------------------------------------------------------------------------------------------
-titulo()
-instrucao()
-start()
+if __name__ == "__main__":        
+    titulo()
+    instrucao()
+    start()
